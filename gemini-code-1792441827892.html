@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Justin Fearon — Electrical Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #FFFFFF; --surface: #F8FAFC; --card: #F1F5F9; --accent: #0AADA0;
+      --accent-dim: rgba(10,173,160,0.1); --text: #1E293B; --muted: #64748B;
+      --border: rgba(0,0,0,0.09);
+      --font-head: 'Space Grotesk', sans-serif; --font-body: 'Inter', sans-serif;
+    }
+    
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    
+    /* Navigation */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2.5rem; background: rgba(11,17,32,0.88); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .nav-name { font-family: var(--font-head); font-weight: 600; font-size: 1rem; color: #EDF2F0; text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.875rem; color: rgba(255,255,255,0.65); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #EDF2F0; }
+    
+    /* Hero Section */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 2.5rem 5rem; position: relative; overflow: hidden; background: #0C1118; color: #EDF2F0; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,17,24,0.98) 0%, rgba(12,17,24,0.55) 50%, rgba(12,17,24,0.25) 100%); z-index: 1; }
+    .hero-content { position: relative; z-index: 2; max-width: 780px; }
+    .hero-tag { font-size: 0.78rem; color: var(--accent); font-weight: 500; letter-spacing: 0.08em; margin-bottom: 1.25rem; }
+    .hero h1 { font-family: var(--font-head); font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; color: #EDF2F0; margin-bottom: 1.5rem; }
+    .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.65); max-width: 500px; line-height: 1.8; margin-bottom: 2.5rem; }
+    .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    
+    /* Buttons */
+    .btn { display: inline-block; padding: 0.7rem 1.5rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; text-decoration: none; transition: all 0.2s; font-family: var(--font-body); cursor: pointer; border: none; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #088c82; }
+    .btn-ghost { border: 1px solid var(--border); color: var(--muted); background: transparent; }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    
+    /* Sections */
+    section { max-width: 1000px; margin: 0 auto; padding: 6rem 2.5rem; }
+    .section-label { font-size: 0.72rem; color: var(--accent); font-weight: 500; letter-spacing: 0.09em; margin-bottom: 2.5rem; text-transform: uppercase; }
+    h2 { font-family: var(--font-head); font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 600; letter-spacing: -0.02em; color: var(--text); margin-bottom: 1.5rem; line-height: 1.2; }
+    
+    .about-text p { color: var(--muted); margin-bottom: 1.25rem; font-size: 0.975rem; max-width: 650px; }
+    
+    /* Projects Grid */
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .project-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color 0.2s, transform 0.2s; text-decoration: none; display: block; color: inherit; cursor: pointer; }
+    .project-card:hover { border-color: rgba(10,173,160,0.4); transform: translateY(-3px); }
+    .project-card-img { width: 100%; height: 200px; object-fit: cover; display: block; background: var(--surface); }
+    .project-card-img-placeholder { width: 100%; height: 200px; background: linear-gradient(135deg, var(--surface) 0%, #E2E8F0 100%); display: flex; align-items: center; justify-content: center; }
+    .project-card-img-placeholder span { font-size: 2.5rem; }
+    .project-card-body { padding: 1.5rem; }
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem; }
+    .project-card h3 { font-family: var(--font-head); font-size: 0.975rem; font-weight: 600; color: var(--text); letter-spacing: -0.01em; line-height: 1.3; }
+    .badge { font-size: 0.68rem; font-weight: 500; padding: 0.18rem 0.55rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-left: 0.75rem; }
+    .badge-done { background: rgba(34,197,94,0.12); color: #16A34A; border: 1px solid rgba(34,197,94,0.2); }
+    .badge-wip { background: rgba(245,158,11,0.12); color: #D97706; border: 1px solid rgba(245,158,11,0.2); }
+    .project-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.1rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .project-tag { font-size: 0.7rem; color: var(--muted); background: #FFFFFF; border: 1px solid var(--border); padding: 0.18rem 0.55rem; border-radius: 4px; }
+    .view-link { font-size: 0.8rem; color: var(--accent); margin-top: 1rem; display: inline-block; font-weight: 500; }
+    
+    /* Project Detail Views */
+    .project-detail-view { display: none; padding-top: 6rem; }
+    .project-detail-view.active { display: block; }
+    .hero-detail { max-width: 1000px; margin: 0 auto; padding: 2rem 2.5rem 3rem; }
+    .hero-sub-detail { font-size: 1.05rem; color: var(--muted); max-width: 600px; line-height: 1.8; }
+    .meta-row { display: flex; gap: 2.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .meta-item label { font-size: 0.7rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+    .meta-item span { font-size: 0.9rem; color: var(--text); font-weight: 500; }
+    .gallery { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 4rem; }
+    .gallery img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: opacity 0.2s; }
+    .gallery img:hover { opacity: 0.85; }
+    .gallery img:first-child { grid-column: span 2; aspect-ratio: 4/3; }
+    .contributions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0 3rem; }
+    .contribution-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; }
+    .contribution-card h3 { font-family: var(--font-head); font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+    .contribution-card p { font-size: 0.85rem; color: var(--muted); margin: 0; max-width: none; }
+    
+    /* Contact & Footer */
+    .contact-inner { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 3rem; }
+    .contact-inner p { color: var(--muted); font-size: 0.975rem; max-width: 500px; margin-bottom: 2rem; }
+    .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 2rem; font-size: 0.8rem; color: var(--muted); }
+    .divider { border: none; border-top: 1px solid var(--border); max-width: 1000px; margin: 0 auto; }
+    
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 999; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 6px; }
+    .lightbox-close { position: absolute; top: 1.5rem; right: 1.5rem; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; background: none; border: none; line-height: 1; }
+    .lightbox-close:hover { opacity: 1; }
+
+    @media (max-width: 720px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1rem; }
+      .hero { padding: 0 1.25rem 4rem; }
+      section, .hero-detail { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .projects-grid, .contributions { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: 1fr; }
+      .gallery img:first-child { grid-column: span 1; aspect-ratio: 3/4; }
+      .meta-row { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-name" href="javascript:void(0)" onclick="showView('main')">Justin Fearon</a>
+  <ul class="nav-links">
+    <li><a href="javascript:void(0)" onclick="showView('main'); setTimeout(() => document.getElementById('about').scrollIntoView(), 50);">About</a></li>
+    <li><a href="javascript:void(0)" onclick="showView('main'); setTimeout(() => document.getElementById('projects').scrollIntoView(), 50);">Projects</a></li>
+    <li><a href="javascript:void(0)" onclick="showView('main'); setTimeout(() => document.getElementById('contact').scrollIntoView(), 50);">Contact</a></li>
+    <li><a href="mailto:jxstinfearon4@gmail.com" class="btn btn-primary" style="padding:0.45rem 1rem;font-size:0.8rem;">Email Me</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN LANDING VIEW -->
+<div id="view-main">
+  <div class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Electrical Engineering · Florida International University</p>
+      <h1>Justin Fearon</h1>
+      <p class="hero-sub">I like to build and innovate.</p>
+      <div class="hero-links">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-ghost" style="color:#FFF; border-color:rgba(255,255,255,0.3);">Get in Touch</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <section id="about">
+    <p class="section-label">About</p>
+    <div class="about-text">
+      <h2>Engineer by instinct,<br>explorer by nature.</h2>
+      <p>I'm an Electrical Engineering student at Florida International University, graduating Summer 2027. I've always been drawn to the process of building — watching something go from a concept on paper to a physical thing that works in the real world. That's why I chose engineering.</p>
+      <p>My research spans underwater sensor deployment, PCB fabrication, and embedded systems development. Outside the lab, I'm self-teaching tools like Altium and MATLAB to push my technical range further, because the best engineers never stop learning.</p>
+      <p>I'm actively seeking Summer 2027 internship and co-op opportunities in electrical engineering, defense, aerospace, and hardware development. U.S. citizen, eligible for security clearance.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="projects">
+    <p class="section-label">Projects</p>
+    <h2>What I've built</h2>
+    <div class="projects-grid">
+
+      <div class="project-card" onclick="showView('smores')">
+        <img class="project-card-img" src="smores-rig.jpg" alt="SMORES sensor rig">
+        <div class="project-card-body">
+          <div class="project-header">
+            <h3>SMORES Underwater Sensing Platform</h3>
+            <span class="badge badge-done">Deployed</span>
+          </div>
+          <p>Multi-sensor underwater platform for ocean deployment. Calibrated 28 optical oxygen sensors, managed solar power systems, and engineered a hardware fix that saved a critical field deployment.</p>
+          <div class="project-tags">
+            <span class="project-tag">Sensor Integration</span>
+            <span class="project-tag">Power Systems</span>
+            <span class="project-tag">Field Deployment</span>
+          </div>
+          <span class="view-link">View project →</span>
+        </div>
+      </div>
+
+      <div class="project-card" onclick="showView('pcb')">
+        <img class="project-card-img" src="image.png" alt="LPKF ProtoMat S103 Milling Machine">
+        <div class="project-card-body">
+          <div class="project-header">
+            <h3>PCB Fabrication — LPKF Milling</h3>
+            <span class="badge badge-done">Completed</span>
+          </div>
+          <p>End-to-end PCB fabrication using the LPKF ProtoMat S103 milling machine and CircuitPro. Gerber import, design rule checks, toolpath generation, and physical milling, drilling, and contour-routing.</p>
+          <div class="project-tags">
+            <span class="project-tag">CircuitPro</span>
+            <span class="project-tag">LPKF Machine</span>
+            <span class="project-tag">PCB Design</span>
+          </div>
+          <span class="view-link">View project →</span>
+        </div>
+      </div>
+
+      <div class="project-card" onclick="showView('scg')">
+        <div class="project-card-img-placeholder"><span>❤️</span></div>
+        <div class="project-card-body">
+          <div class="project-header">
+            <h3>SCG Phantom — Heartbeat Emulation</h3>
+            <span class="badge badge-wip">In Progress</span>
+          </div>
+          <p>Embedded system emulating a rhythmic heartbeat on a tissue-like phantom using four piezoelectric actuators driven by an Arduino with a piezo driver stepping voltage to 12–100V.</p>
+          <div class="project-tags">
+            <span class="project-tag">Arduino</span>
+            <span class="project-tag">Piezoelectric Actuators</span>
+            <span class="project-tag">Embedded Systems</span>
+          </div>
+          <span class="view-link">View project →</span>
+        </div>
+      </div>
+
+      <div class="project-card" onclick="showView('crystal-radio')">
+        <div class="project-card-img-placeholder"><span>📡</span></div>
+        <div class="project-card-body">
+          <div class="project-header">
+            <h3>Crystal Radio Receiver</h3>
+            <span class="badge badge-wip">In Progress</span>
+          </div>
+          <p>AM radio receiver built from scratch — tuned LC circuit, germanium diode demodulator, and high-impedance earphone. Runs entirely on energy captured from radio waves. No battery required.</p>
+          <div class="project-tags">
+            <span class="project-tag">RF Systems</span>
+            <span class="project-tag">LC Circuits</span>
+            <span class="project-tag">Signal Demodulation</span>
+          </div>
+          <span class="view-link">View project →</span>
+        </div>
+      </div>
+
+      <div class="project-card" onclick="showView('tesla')">
+        <div class="project-card-img-placeholder"><span>⚡</span></div>
+        <div class="project-card-body">
+          <div class="project-header">
+            <h3>Tesla Coil — Wireless Power Transfer</h3>
+            <span class="badge badge-wip">In Progress</span>
+          </div>
+          <p>Tesla coil demonstrating wireless power transfer through resonant electromagnetic induction. Explores high-frequency AC generation and the principles behind modern wireless charging.</p>
+          <div class="project-tags">
+            <span class="project-tag">High-Frequency AC</span>
+            <span class="project-tag">EM Induction</span>
+            <span class="project-tag">Resonance</span>
+          </div>
+          <span class="view-link">View project →</span>
+        </div>
+      </div>
+
+      <div class="project-card" onclick="showView('wireless-sim')">
+        <div class="project-card-img-placeholder"><span>🌐</span></div>
+        <div class="project-card-body">
+          <div class="project-header">
+            <h3>Wireless Sensor Network Simulation</h3>
+            <span class="badge badge-wip">In Progress</span>
+          </div>
+          <p>3D simulation of a wireless sensor network in Unity using C#. First-person navigation framework, 5+ custom scripts, and planned EM wave visualization to model signal propagation.</p>
+          <div class="project-tags">
+            <span class="project-tag">Unity</span>
+            <span class="project-tag">C#</span>
+            <span class="project-tag">Wireless Networks</span>
+          </div>
+          <span class="view-link">View project →</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <section id="contact">
+    <p class="section-label">Contact</p>
+    <div class="contact-inner">
+      <h2>Let's connect.</h2>
+      <p>I'm actively looking for Summer 2027 internship and co-op opportunities in electrical engineering, defense, aerospace, and hardware development.</p>
+      <div class="contact-links">
+        <a href="mailto:jxstinfearon4@gmail.com" class="btn btn-primary">jxstinfearon4@gmail.com</a>
+        <a href="https://www.linkedin.com/in/justinfearon4" target="_blank" class="btn btn-ghost">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- DETAIL VIEW: SMORES -->
+<div id="view-smores" class="project-detail-view">
+  <div class="hero-detail">
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-bottom:1.5rem;">← Back to projects</a>
+    <span class="badge badge-done" style="display:inline-block; margin-bottom:1rem;">Deployed · Active</span>
+    <h1 style="font-family:var(--font-head); font-size:clamp(2rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; margin-bottom:1rem;">SMORES Underwater<br>Sensing Platform</h1>
+    <p class="hero-sub-detail">A field-deployed multi-sensor array designed to collect dissolved oxygen data at depth in coastal ocean environments — currently deployed and collecting data.</p>
+    <div class="meta-row">
+      <div class="meta-item"><label>Role</label><span>Undergraduate Researcher</span></div>
+      <div class="meta-item"><label>Institution</label><span>FIU / Harvard Collaboration</span></div>
+      <div class="meta-item"><label>Timeline</label><span>Mar 2025 — Present</span></div>
+      <div class="meta-item"><label>Status</label><span>Deployed & Collecting Data</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="max-width:1000px; margin:0 auto; padding:3rem 2.5rem;">
+    <div class="gallery">
+      <img src="smores-rig.jpg" alt="Full SMORES sensor rig with buoy in lab" onclick="openLightbox(this.src)">
+      <img src="smores-lab.jpg" alt="Sensor housings on lab bench" onclick="openLightbox(this.src)">
+      <img src="smores-dock.jpg" alt="Power setup on dock before deployment" onclick="openLightbox(this.src)">
+    </div>
+
+    <p class="section-label">Overview</p>
+    <h2>What is SMORES?</h2>
+    <p style="color:var(--muted); font-size:0.975rem; margin-bottom:1.25rem; max-width:700px;">SMORES is an underwater sensing platform designed to collect dissolved oxygen readings at multiple depths in coastal environments. The system consists of cylindrical sensor housings deployed beneath a surface buoy, connected to topside power and data acquisition systems via cabling. The data collected supports ongoing oceanographic research in collaboration with Harvard University.</p>
+
+    <p class="section-label" style="margin-top:3rem;">My Contributions</p>
+    <h2>What I built and fixed</h2>
+
+    <div class="contributions">
+      <div class="contribution-card">
+        <h3>Sensor Calibration</h3>
+        <p>Calibrated 28 optical oxygen sensors prior to deployment, verifying output readings against known reference values to ensure measurement accuracy in the field.</p>
+      </div>
+      <div class="contribution-card">
+        <h3>Topside Power & Networking</h3>
+        <p>Set up and managed the topside power system using solar charge controllers, ran network cabling between the buoy and sensor array, and verified all connections before deployment.</p>
+      </div>
+      <div class="contribution-card">
+        <h3>Critical Hardware Fix</h3>
+        <p>During the first deployment, the SD card was dislodged by component movement inside the cylindrical housing — causing a critical data loss failure. Diagnosed the root cause back in the lab and designed a custom foam restraint that held all components in place for subsequent deployments.</p>
+      </div>
+      <div class="contribution-card">
+        <h3>Successful Redeployment</h3>
+        <p>Following the foam restraint fix, the platform was redeployed successfully. It is currently deployed in a coastal location, actively collecting dissolved oxygen data.</p>
+      </div>
+    </div>
+
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-top:2rem;">← Back to all projects</a>
+  </div>
+</div>
+
+<!-- DETAIL VIEW: LPKF PCB FABRICATION -->
+<div id="view-pcb" class="project-detail-view">
+  <div class="hero-detail">
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-bottom:1.5rem;">← Back to projects</a>
+    <span class="badge badge-done" style="display:inline-block; margin-bottom:1rem;">Completed</span>
+    <h1 style="font-family:var(--font-head); font-size:clamp(2rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; margin-bottom:1rem;">PCB Prototyping & Fabrication<br>LPKF ProtoMat S103</h1>
+    <p class="hero-sub-detail">Precision circuit board milling, drilling, and contour routing using the LPKF ProtoMat S103 machine and CircuitPro software.</p>
+    <div class="meta-row">
+      <div class="meta-item"><label>Role</label><span>Research Engineer / Operator</span></div>
+      <div class="meta-item"><label>Equipment</label><span>LPKF ProtoMat S103</span></div>
+      <div class="meta-item"><label>Software</label><span>LPKF CircuitPro</span></div>
+      <div class="meta-item"><label>Timeline</label><span>Summer 2025</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="max-width:1000px; margin:0 auto; padding:3rem 2.5rem;">
+    <div class="gallery" style="grid-template-columns: 1fr 1fr;">
+      <img src="image.png" alt="LPKF ProtoMat S103 Milling Machine" onclick="openLightbox(this.src)" style="grid-column: span 1; aspect-ratio:4/3;">
+      <img src="image_2.png" alt="LPKF CircuitPro Toolpath Verification" onclick="openLightbox(this.src)" style="grid-column: span 1; aspect-ratio:4/3;">
+    </div>
+
+    <p class="section-label">Overview</p>
+    <h2>In-House High-Precision PCB Milling</h2>
+    <p style="color:var(--muted); font-size:0.975rem; margin-bottom:1.25rem; max-width:700px;">Trained on specialized LPKF PCB prototyping equipment to fabricate custom circuit boards in support of FIU research initiatives. The workflow covers everything from CAD/Gerber file preparation to hardware isolation milling and physical board contouring.</p>
+
+    <p class="section-label" style="margin-top:3rem;">Technical Steps & Execution</p>
+    <h2>Fabrication Process</h2>
+
+    <div class="contributions">
+      <div class="contribution-card">
+        <h3>CAM & Gerber Import</h3>
+        <p>Imported Gerber and drill files into LPKF CircuitPro, performed design rule checks, and aligned layers for double-sided or single-sided board milling.</p>
+      </div>
+      <div class="contribution-card">
+        <h3>Toolpath Optimization</h3>
+        <p>Generated optimized toolpaths for isolation milling, copper rub-out, and mechanical drilling to maximize trace accuracy and minimize tool wear.</p>
+      </div>
+      <div class="contribution-card">
+        <h3>Hardware Milling & Drilling</h3>
+        <p>Operated the LPKF ProtoMat S103 high-speed spindle system to mill isolation channels into copper-clad substrates and drill precision via holes.</p>
+      </div>
+      <div class="contribution-card">
+        <h3>Quality Assurance</h3>
+        <p>Inspected traces under magnification for short circuits or thin copper bridges, preparing the prototype boards for component soldering and research integration.</p>
+      </div>
+    </div>
+
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-top:2rem;">← Back to all projects</a>
+  </div>
+</div>
+
+<!-- DETAIL VIEW: SCG PHANTOM -->
+<div id="view-scg" class="project-detail-view">
+  <div class="hero-detail">
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-bottom:1.5rem;">← Back to projects</a>
+    <span class="badge badge-wip" style="display:inline-block; margin-bottom:1rem;">In Progress</span>
+    <h1 style="font-family:var(--font-head); font-size:clamp(2rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; margin-bottom:1rem;">SCG Phantom — Heartbeat Emulation</h1>
+    <p class="hero-sub-detail">Embedded system emulating rhythmic heartbeats on tissue-like phantoms using piezoelectric actuation.</p>
+  </div>
+  <hr class="divider">
+  <div style="max-width:1000px; margin:0 auto; padding:3rem 2.5rem;">
+    <p>Developing an Arduino-controlled piezoelectric driver system stepping voltages up to 12–100V to actuate four piezoelectric elements, simulating cardiovascular motion profiles.</p>
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-top:2rem;">← Back to all projects</a>
+  </div>
+</div>
+
+<!-- DETAIL VIEW: CRYSTAL RADIO -->
+<div id="view-crystal-radio" class="project-detail-view">
+  <div class="hero-detail">
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-bottom:1.5rem;">← Back to projects</a>
+    <span class="badge badge-wip" style="display:inline-block; margin-bottom:1rem;">In Progress</span>
+    <h1 style="font-family:var(--font-head); font-size:clamp(2rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; margin-bottom:1rem;">Crystal Radio Receiver</h1>
+    <p class="hero-sub-detail">Zero-power AM radio receiver constructed from foundational passive RF components.</p>
+  </div>
+  <hr class="divider">
+  <div style="max-width:1000px; margin:0 auto; padding:3rem 2.5rem;">
+    <p>Constructed an unpowered AM receiver using an LC resonant circuit, germanium diode detector, and high-impedance earphone powered purely by captured electromagnetic radiation.</p>
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-top:2rem;">← Back to all projects</a>
+  </div>
+</div>
+
+<!-- DETAIL VIEW: TESLA COIL -->
+<div id="view-tesla" class="project-detail-view">
+  <div class="hero-detail">
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-bottom:1.5rem;">← Back to projects</a>
+    <span class="badge badge-wip" style="display:inline-block; margin-bottom:1rem;">In Progress</span>
+    <h1 style="font-family:var(--font-head); font-size:clamp(2rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; margin-bottom:1rem;">Tesla Coil — Wireless Power Transfer</h1>
+    <p class="hero-sub-detail">High-frequency resonant transformer demonstrating wireless power transmission.</p>
+  </div>
+  <hr class="divider">
+  <div style="max-width:1000px; margin:0 auto; padding:3rem 2.5rem;">
+    <p>Exploring high-voltage resonant transformers to transmit electrical energy wirelessly through air via tuned primary and secondary LC circuits.</p>
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-top:2rem;">← Back to all projects</a>
+  </div>
+</div>
+
+<!-- DETAIL VIEW: WIRELESS SIM -->
+<div id="view-wireless-sim" class="project-detail-view">
+  <div class="hero-detail">
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-bottom:1.5rem;">← Back to projects</a>
+    <span class="badge badge-wip" style="display:inline-block; margin-bottom:1rem;">In Progress</span>
+    <h1 style="font-family:var(--font-head); font-size:clamp(2rem, 5vw, 3.2rem); font-weight:700; line-height:1.1; margin-bottom:1rem;">Wireless Sensor Network Simulation</h1>
+    <p class="hero-sub-detail">Interactive 3D simulation visualizing wireless sensor node communication and coverage.</p>
+  </div>
+  <hr class="divider">
+  <div style="max-width:1000px; margin:0 auto; padding:3rem 2.5rem;">
+    <p>Building a custom Unity application in C# featuring first-person controls and real-time visualization of sensor network ranges and radio wave propagation.</p>
+    <a href="javascript:void(0)" onclick="showView('main')" class="btn btn-ghost" style="margin-top:2rem;">← Back to all projects</a>
+  </div>
+</div>
+
+<footer>© 2026 Justin Fearon</footer>
+
+<!-- Lightbox Modal -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  function showView(viewId) {
+    document.getElementById('view-main').style.display = 'none';
+    const detailViews = document.querySelectorAll('.project-detail-view');
+    detailViews.forEach(v => v.classList.remove('active'));
+
+    if (viewId === 'main') {
+      document.getElementById('view-main').style.display = 'block';
+    } else {
+      const target = document.getElementById('view-' + viewId);
+      if (target) {
+        target.classList.add('active');
+        window.scrollTo(0, 0);
+      }
+    }
+  }
+
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+
+</body>
+</html>
